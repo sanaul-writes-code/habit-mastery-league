@@ -1,2 +1,3 @@
-# habit_mastery_league
- Habit tracking mobile app built with Flutter
+# Habit Mastery League
+
+A Flutter mobile app for tracking habits, daily completion, streaks, and progress statistics.
