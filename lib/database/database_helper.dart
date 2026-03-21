@@ -1,5 +1,7 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import '../models/habit.dart';
+import '../models/habit_log.dart';
 
 class DatabaseHelper {
   DatabaseHelper._internal();
@@ -21,11 +23,7 @@ class DatabaseHelper {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, 'habit_mastery_league.db');
 
-    return openDatabase(
-      path,
-      version: 1,
-      onCreate: _onCreate,
-    );
+    return openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
   Future<void> _onCreate(Database db, int version) async {
@@ -52,5 +50,65 @@ class DatabaseHelper {
         UNIQUE(habit_id, completed_date)
       )
     ''');
+  }
+
+  // CRUD methods for habits and habit logs
+  Future<int> insertHabit(Habit habit) async {
+    final db = await database;
+    return await db.insert(
+      'habits',
+      habit.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<Habit>> getHabits() async {
+    final db = await database;
+    final maps = await db.query(
+      'habits',
+      where: 'is_archived = ?',
+      whereArgs: [0],
+      orderBy: 'created_at DESC',
+    );
+    return maps.map((map) => Habit.fromMap(map)).toList();
+  }
+
+  Future<int> updateHabit(Habit habit) async {
+    final db = await database;
+    return await db.update(
+      'habits',
+      habit.toMap(),
+      where: 'id = ?',
+      whereArgs: [habit.id],
+    );
+  }
+
+  Future<int> deleteHabit(int id) async {
+    final db = await database;
+    return await db.delete(
+      'habits',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<int> insertHabitLog(HabitLog log) async {
+    final db = await database;
+    return await db.insert(
+      'habit_logs',
+      log.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.ignore,
+    );
+  }
+
+  Future<List<HabitLog>> getLogsForHabit(int habitId) async {
+    final db = await database;
+    final maps = await db.query(
+      'habit_logs',
+      where: 'habit_id = ?',
+      whereArgs: [habitId],
+      orderBy: 'completed_date DESC',
+    );
+    return maps.map((map) => HabitLog.fromMap(map)).toList();
   }
 }
