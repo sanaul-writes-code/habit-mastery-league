@@ -85,11 +85,7 @@ class DatabaseHelper {
 
   Future<int> deleteHabit(int id) async {
     final db = await database;
-    return await db.delete(
-      'habits',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+    return await db.delete('habits', where: 'id = ?', whereArgs: [id]);
   }
 
   Future<int> insertHabitLog(HabitLog log) async {
