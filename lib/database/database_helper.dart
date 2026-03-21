@@ -107,4 +107,30 @@ class DatabaseHelper {
     );
     return maps.map((map) => HabitLog.fromMap(map)).toList();
   }
+
+  Future<bool> isHabitCompletedToday(int habitId) async {
+    final db = await database;
+    final today = DateTime.now().toIso8601String().split('T').first;
+
+    final result = await db.query(
+      'habit_logs',
+      where: 'habit_id = ? AND completed_date = ?',
+      whereArgs: [habitId, today],
+      limit: 1,
+    );
+
+    return result.isNotEmpty;
+  }
+
+  Future<void> markHabitCompletedToday(int habitId) async {
+    final db = await database;
+    final today = DateTime.now().toIso8601String().split('T').first;
+
+    await db.insert('habit_logs', {
+      'habit_id': habitId,
+      'completed_date': today,
+      'status': 1,
+      'created_at': DateTime.now().toIso8601String(),
+    }, conflictAlgorithm: ConflictAlgorithm.ignore);
+  }
 }
