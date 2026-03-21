@@ -64,7 +64,15 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen> {
     final habit = widget.habit;
 
     return Scaffold(
-      appBar: AppBar(title: Text(habit.name)),
+      appBar: AppBar(
+        title: Text(habit.name),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: _deleteHabit,
+          ),
+        ],
+      ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Padding(
@@ -136,5 +144,37 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen> {
               ),
             ),
     );
+  }
+
+  Future<void> _deleteHabit() async {
+    final shouldDelete = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Delete Habit'),
+          content: const Text(
+            'Are you sure you want to delete this habit?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (shouldDelete != true) return;
+
+    await DatabaseHelper.instance.deleteHabit(widget.habit.id!);
+
+    if (!mounted) return;
+
+    Navigator.pop(context, true);
   }
 }

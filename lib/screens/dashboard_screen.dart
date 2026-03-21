@@ -79,13 +79,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       '${habit.category} • ${habit.targetFrequency}',
                     ),
                     trailing: const Icon(Icons.chevron_right),
-                    onTap: () {
-                      Navigator.push(
+                    onTap: () async {
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (_) => HabitDetailsScreen(habit: habit),
                         ),
                       );
+                      await _loadHabits();
                     },
                   ),
                 );
