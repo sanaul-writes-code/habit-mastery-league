@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'screens/home_screen.dart';
 import 'theme_notifier.dart';
+import 'screens/splash_screen.dart';
 
 void main() {
   runApp(
@@ -88,7 +87,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
         ),
       ),
-      home: const HomeScreen(),
+      home: const SplashScreen(),
     );
   }
 }
