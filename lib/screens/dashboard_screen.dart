@@ -49,6 +49,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
     await _loadHabits();
   }
 
+  Future<void> _markHabitComplete(Habit habit) async {
+    await DatabaseHelper.instance.markHabitCompletedToday(habit.id!);
+    await _loadHabits();
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('[4m{habit.name} marked complete!')),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +89,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     subtitle: Text(
                       '${habit.category} • ${habit.targetFrequency}',
                     ),
-                    trailing: const Icon(Icons.chevron_right),
+                    trailing: SizedBox(
+                      width: 72,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.check_circle_outline),
+                            onPressed: () => _markHabitComplete(habit),
+                          ),
+                          const Icon(Icons.chevron_right),
+                        ],
+                      ),
+                    ),
                     onTap: () async {
                       await Navigator.push(
                         context,

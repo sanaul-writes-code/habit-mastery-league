@@ -133,4 +133,60 @@ class DatabaseHelper {
       'created_at': DateTime.now().toIso8601String(),
     }, conflictAlgorithm: ConflictAlgorithm.ignore);
   }
+
+  Future<int> getHabitStreak(int habitId) async {
+    final logs = await getLogsForHabit(habitId);
+
+    if (logs.isEmpty) return 0;
+
+    final completedDates = logs
+        .where((log) => log.status)
+        .map(
+          (log) => DateTime(
+            log.completedDate.year,
+            log.completedDate.month,
+            log.completedDate.day,
+          ),
+        )
+        .toList();
+
+    completedDates.sort((a, b) => b.compareTo(a));
+
+    int streak = 0;
+    DateTime currentDate = DateTime.now();
+    currentDate = DateTime(
+      currentDate.year,
+      currentDate.month,
+      currentDate.day,
+    );
+
+    for (final date in completedDates) {
+      final normalizedDate = DateTime(date.year, date.month, date.day);
+
+      if (normalizedDate == currentDate ||
+          normalizedDate == currentDate.subtract(Duration(days: streak))) {
+        streak++;
+      } else if (normalizedDate.isBefore(
+        currentDate.subtract(Duration(days: streak)),
+      )) {
+        break;
+      }
+    }
+
+    return streak;
+  }
+
+  Future<int> getTotalCompletedCount(int habitId) async {
+    final db = await database;
+    final result = await db.rawQuery(
+      '''
+      SELECT COUNT(*) as count
+      FROM habit_logs
+      WHERE habit_id = ? AND status = 1
+      ''',
+      [habitId],
+    );
+
+    return Sqflite.firstIntValue(result) ?? 0;
+  }
 }

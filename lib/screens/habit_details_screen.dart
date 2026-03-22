@@ -17,6 +17,8 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen> {
   bool _completedToday = false;
   bool _isLoading = true;
   List<HabitLog> _logs = [];
+  int _streak = 0;
+  int _totalCompleted = 0;
 
   @override
   void initState() {
@@ -31,12 +33,20 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen> {
     final logs = await DatabaseHelper.instance.getLogsForHabit(
       widget.habit.id!,
     );
+    final streak = await DatabaseHelper.instance.getHabitStreak(
+      widget.habit.id!,
+    );
+    final totalCompleted = await DatabaseHelper.instance.getTotalCompletedCount(
+      widget.habit.id!,
+    );
 
     if (!mounted) return;
 
     setState(() {
       _completedToday = completedToday;
       _logs = logs;
+      _streak = streak;
+      _totalCompleted = totalCompleted;
       _isLoading = false;
     });
   }
@@ -67,10 +77,7 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen> {
       appBar: AppBar(
         title: Text(habit.name),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: _deleteHabit,
-          ),
+          IconButton(icon: const Icon(Icons.delete), onPressed: _deleteHabit),
         ],
       ),
       body: _isLoading
@@ -95,6 +102,10 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen> {
                   Text(
                     'Description: ${habit.description.isEmpty ? "No description" : habit.description}',
                   ),
+                  const SizedBox(height: 16),
+                  Text('Current Streak: $_streak day(s)'),
+                  const SizedBox(height: 8),
+                  Text('Total Completions: $_totalCompleted'),
                   const SizedBox(height: 20),
 
                   SizedBox(
@@ -152,9 +163,7 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen> {
       builder: (context) {
         return AlertDialog(
           title: const Text('Delete Habit'),
-          content: const Text(
-            'Are you sure you want to delete this habit?',
-          ),
+          content: const Text('Are you sure you want to delete this habit?'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
