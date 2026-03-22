@@ -11,16 +11,11 @@ class SettingsScreen extends StatelessWidget {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-      ),
+      appBar: AppBar(title: const Text('Settings')),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color(0xFFF7F4FF),
-              Color(0xFFEDE7FF),
-            ],
+            colors: [Color(0xFFF7F4FF), Color(0xFFEDE7FF)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -33,7 +28,9 @@ class SettingsScreen extends StatelessWidget {
                 title: const Text('Dark Mode'),
                 subtitle: const Text('Enable dark theme'),
                 value: themeNotifier.isDarkMode,
-                onChanged: themeNotifier.toggleTheme,
+                onChanged: (value) {
+                  themeNotifier.toggleTheme(value);
+                },
               ),
             ),
             const SizedBox(height: 12),
