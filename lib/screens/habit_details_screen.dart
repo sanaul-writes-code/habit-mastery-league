@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../database/database_helper.dart';
 import '../models/habit.dart';
 import '../models/habit_log.dart';
+import '../services/sound_service.dart';
 
 class HabitDetailsScreen extends StatefulWidget {
   final Habit habit;
@@ -53,6 +54,7 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen> {
 
   Future<void> _markCompletedToday() async {
     await DatabaseHelper.instance.markHabitCompletedToday(widget.habit.id!);
+    await SoundService.playComplete();
     await _loadHabitDetails();
 
     if (!mounted) return;
@@ -158,6 +160,7 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen> {
   }
 
   Future<void> _deleteHabit() async {
+    await SoundService.playDelete();
     final shouldDelete = await showDialog<bool>(
       context: context,
       builder: (context) {
