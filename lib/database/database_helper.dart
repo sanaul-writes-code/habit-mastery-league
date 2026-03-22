@@ -189,4 +189,59 @@ class DatabaseHelper {
 
     return Sqflite.firstIntValue(result) ?? 0;
   }
+
+  Future<int> getTotalHabitsCount() async {
+    final db = await database;
+    final result = await db.rawQuery('''
+      SELECT COUNT(*) as count
+      FROM habits
+      WHERE is_archived = 0
+    ''');
+
+    return Sqflite.firstIntValue(result) ?? 0;
+  }
+
+  Future<int> getCompletedTodayCount() async {
+    final db = await database;
+    final today = DateTime.now().toIso8601String().split('T').first;
+
+    final result = await db.rawQuery(
+      '''
+      SELECT COUNT(DISTINCT habit_id) as count
+      FROM habit_logs
+      WHERE completed_date = ? AND status = 1
+      ''',
+      [today],
+    );
+
+    return Sqflite.firstIntValue(result) ?? 0;
+  }
+
+  Future<int> getTotalCompletionCount() async {
+    final db = await database;
+    final result = await db.rawQuery('''
+      SELECT COUNT(*) as count
+      FROM habit_logs
+      WHERE status = 1
+    ''');
+
+    return Sqflite.firstIntValue(result) ?? 0;
+  }
+
+  Future<int> getLongestStreakAcrossHabits() async {
+    final habits = await getHabits();
+
+    int longestStreak = 0;
+
+    for (final habit in habits) {
+      if (habit.id == null) continue;
+
+      final streak = await getHabitStreak(habit.id!);
+      if (streak > longestStreak) {
+        longestStreak = streak;
+      }
+    }
+
+    return longestStreak;
+  }
 }
