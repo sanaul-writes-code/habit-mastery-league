@@ -43,7 +43,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Future<void> _openAddHabitScreen() async {
-    await SoundService.playOpen();
+    SoundService.playOpen();
     await Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => const AddHabitScreen()),
@@ -54,7 +54,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Future<void> _markHabitComplete(Habit habit) async {
     await DatabaseHelper.instance.markHabitCompletedToday(habit.id!);
-    await SoundService.playComplete();
+    SoundService.playComplete();
     await _loadHabits();
 
     if (!mounted) return;
@@ -106,7 +106,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           IconButton(
             icon: const Icon(Icons.bar_chart),
             onPressed: () async {
-              await SoundService.playOpen();
+              SoundService.playOpen();
               await Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const StatisticsScreen()),
@@ -160,10 +160,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Expanded(
                     child: _habits.isEmpty
                         ? const Center(
-                            child: Text(
-                              'No habits yet.\nTap + to add your first habit.',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 18),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.track_changes,
+                                  size: 72,
+                                  color: Colors.deepPurpleAccent,
+                                ),
+                                SizedBox(height: 16),
+                                Text(
+                                  'No habits yet',
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  'Tap + to start building better routines.',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black54,
+                                  ),
+                                ),
+                              ],
                             ),
                           )
                         : ListView.builder(
@@ -218,7 +240,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     ),
                                   ),
                                   onTap: () async {
-                                    await SoundService.playTap();
+                                    SoundService.playTap();
                                     await Navigator.push(
                                       context,
                                       MaterialPageRoute(

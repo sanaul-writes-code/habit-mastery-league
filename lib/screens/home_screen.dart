@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'dashboard_screen.dart';
-import 'statistics_screen.dart';
-import 'add_habit_screen.dart';
 import '../services/sound_service.dart';
+import 'add_habit_screen.dart';
+import 'dashboard_screen.dart';
+import 'settings_screen.dart';
+import 'statistics_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
     DashboardScreen(),
     StatisticsScreen(),
     AddHabitScreen(),
+    SettingsScreen(),
   ];
 
   Future<void> _onTabTapped(int index) async {
@@ -38,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
             BoxShadow(
               color: Colors.black12,
               blurRadius: 10,
-            )
+            ),
           ],
         ),
         child: BottomNavigationBar(
@@ -59,6 +61,10 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
               icon: Icon(Icons.add_circle),
               label: 'Add',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
             ),
           ],
         ),

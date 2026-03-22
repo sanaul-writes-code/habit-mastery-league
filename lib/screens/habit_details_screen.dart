@@ -4,6 +4,7 @@ import '../database/database_helper.dart';
 import '../models/habit.dart';
 import '../models/habit_log.dart';
 import '../services/sound_service.dart';
+import 'add_habit_screen.dart';
 
 class HabitDetailsScreen extends StatefulWidget {
   final Habit habit;
@@ -54,7 +55,7 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen> {
 
   Future<void> _markCompletedToday() async {
     await DatabaseHelper.instance.markHabitCompletedToday(widget.habit.id!);
-    await SoundService.playComplete();
+    SoundService.playComplete();
     await _loadHabitDetails();
 
     if (!mounted) return;
@@ -79,7 +80,14 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen> {
       appBar: AppBar(
         title: Text(habit.name),
         actions: [
-          IconButton(icon: const Icon(Icons.delete), onPressed: _deleteHabit),
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: _editHabit,
+          ),
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: _deleteHabit,
+          ),
         ],
       ),
       body: _isLoading
@@ -159,8 +167,20 @@ class _HabitDetailsScreenState extends State<HabitDetailsScreen> {
     );
   }
 
+  Future<void> _editHabit() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => AddHabitScreen(habit: widget.habit),
+      ),
+    );
+    if (result == true && mounted) {
+      Navigator.pop(context, true);
+    }
+  }
+
   Future<void> _deleteHabit() async {
-    await SoundService.playDelete();
+    SoundService.playDelete();
     final shouldDelete = await showDialog<bool>(
       context: context,
       builder: (context) {
