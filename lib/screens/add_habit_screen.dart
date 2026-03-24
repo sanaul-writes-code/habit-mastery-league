@@ -116,20 +116,30 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
               children: [
                 TextFormField(
                   controller: _nameController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Habit Name',
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Theme.of(context).inputDecorationTheme.fillColor ?? Theme.of(context).colorScheme.surface,
+                    labelStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8)),
+                    hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
                   ),
+                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                   validator: (value) =>
                       value == null || value.isEmpty ? 'Enter a habit name' : null,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _descriptionController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Description',
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Theme.of(context).inputDecorationTheme.fillColor ?? Theme.of(context).colorScheme.surface,
+                    labelStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8)),
+                    hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
                   ),
+                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                 ),
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String>(
@@ -138,17 +148,22 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                       .map(
                         (cat) => DropdownMenuItem(
                           value: cat,
-                          child: Text(cat),
+                          child: Text(cat, style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
                         ),
                       )
                       .toList(),
                   onChanged: (value) {
                     setState(() => _selectedCategory = value!);
                   },
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Category',
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Theme.of(context).inputDecorationTheme.fillColor ?? Theme.of(context).colorScheme.surface,
+                    labelStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8)),
                   ),
+                  dropdownColor: Theme.of(context).colorScheme.surface,
+                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                 ),
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String>(
@@ -157,21 +172,30 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                       .map(
                         (freq) => DropdownMenuItem(
                           value: freq,
-                          child: Text(freq),
+                          child: Text(freq, style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
                         ),
                       )
                       .toList(),
                   onChanged: (value) {
                     setState(() => _selectedFrequency = value!);
                   },
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Frequency',
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Theme.of(context).inputDecorationTheme.fillColor ?? Theme.of(context).colorScheme.surface,
+                    labelStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8)),
                   ),
+                  dropdownColor: Theme.of(context).colorScheme.surface,
+                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: _saveHabit,
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Theme.of(context).colorScheme.primary,
+                    textStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+                  ),
                   child: Text(_isEditing ? 'Update Habit' : 'Save Habit'),
                 ),
               ],

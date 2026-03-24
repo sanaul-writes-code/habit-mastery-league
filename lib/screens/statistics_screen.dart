@@ -26,9 +26,12 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
 
   Future<void> _loadStats() async {
     final totalHabits = await DatabaseHelper.instance.getTotalHabitsCount();
-    final completedToday = await DatabaseHelper.instance.getCompletedTodayCount();
-    final totalCompletions = await DatabaseHelper.instance.getTotalCompletionCount();
-    final longestStreak = await DatabaseHelper.instance.getLongestStreakAcrossHabits();
+    final completedToday = await DatabaseHelper.instance
+        .getCompletedTodayCount();
+    final totalCompletions = await DatabaseHelper.instance
+        .getTotalCompletionCount();
+    final longestStreak = await DatabaseHelper.instance
+        .getLongestStreakAcrossHabits();
 
     if (!mounted) return;
 
@@ -66,7 +69,9 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                     title,
                     style: TextStyle(
                       fontSize: 14,
-                      color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onBackground.withOpacity(0.7),
                     ),
                   ),
                   const SizedBox(height: 6),
@@ -94,16 +99,11 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     const amberAccent = Color(0xFFFFB74D);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Statistics'),
-      ),
+      appBar: AppBar(title: const Text('Statistics')),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color(0xFFF7F4FF),
-              Color(0xFFEDE7FF),
-            ],
+            colors: [Color(0xFFF7F4FF), Color(0xFFEDE7FF)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -122,7 +122,9 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                     'A quick look at your habit performance.',
                     style: TextStyle(
                       fontSize: 15,
-                      color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onBackground.withOpacity(0.7),
                     ),
                   ),
                   const SizedBox(height: 20),
