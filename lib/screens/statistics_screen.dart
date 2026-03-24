@@ -64,17 +64,17 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
-                      color: Colors.black54,
+                      color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7),
                     ),
                   ),
                   const SizedBox(height: 6),
                   Text(
                     value,
-                    style: const TextStyle(
-                      fontSize: 24,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                 ],
@@ -113,19 +113,16 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
             : ListView(
                 padding: const EdgeInsets.all(16),
                 children: [
-                  const Text(
+                  Text(
                     'Your Progress Overview',
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 8),
-                  const Text(
+                  Text(
                     'A quick look at your habit performance.',
                     style: TextStyle(
                       fontSize: 15,
-                      color: Colors.black54,
+                      color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7),
                     ),
                   ),
                   const SizedBox(height: 20),

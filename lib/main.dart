@@ -79,13 +79,13 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      darkTheme: ThemeData(
+      darkTheme: ThemeData.dark().copyWith(
         useMaterial3: true,
-        scaffoldBackgroundColor: darkBg,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: primaryPurple,
-          brightness: Brightness.dark,
+        colorScheme: const ColorScheme.dark(
+          primary: Colors.purpleAccent,
+          secondary: Colors.tealAccent,
         ),
+        scaffoldBackgroundColor: darkBg,
       ),
       home: const SplashScreen(),
     );
