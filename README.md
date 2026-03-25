@@ -80,3 +80,7 @@ Sound Integration
 
 Sanaul:
 
+Splash Screen
+Sound Feedback
+Theme Persistence (IMPORTANT)
+Integration Fix (Stats)
